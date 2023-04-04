@@ -61,7 +61,7 @@ def multi_city_forecast_endpoint():
 
     # Loop through each set of coordinates and retrieve weather data for each city
     for coordinate in coordinates:
-        lat, lon = coordinate.split(',')
+        lat, lon = coordinate['lat'], coordinate['lng']
         
         # Build URL for metadata request
         metadata_url = f"https://api.weather.gov/points/{lat},{lon}"
