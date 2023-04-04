@@ -1,0 +1,197 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "NOAA Weather Forecast API",
+    "description": "A simple API for retrieving weather forecasts by location.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3333"
+    }
+  ],
+  "paths": {
+    "/forecast/{lat},{lon}": {
+      "get": {
+        "summary": "Get forecast for a location.",
+        "operationId": "getForecast",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "lat",
+            "description": "Latitude of the location in decimal degrees.",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "path",
+            "name": "lon",
+            "description": "Longitude of the location in decimal degrees.",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/multi_city_forecast": {
+      "post": {
+        "summary": "Get weather forecasts for multiple cities.",
+        "operationId": "getMultiCityForecast",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "lat": {
+                          "type": "number",
+                          "format": "float",
+                          "example": 37.7749
+                        },
+                        "lng": {
+                          "type": "number",
+                          "format": "float",
+                          "example": -122.4194
+                        }
+                      },
+                      "required": ["lat", "lng"]
+                    }
+                  }
+                },
+                "required": ["coordinates"]
+              },
+              "description": "List of latitude and longitude coordinates as objects with 'lat' and 'lng' keys. No comments are allowed in the JSON response.",
+              "examples": {
+                "multipleCities": {
+                  "value": {
+                    "coordinates": [
+                      {"lat": 40.7128, "lng": -74.0060},
+                      {"lat": 39.9526, "lng": -75.1652}
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "forecasts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "lat": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Latitude of the city"
+                          },
+                          "lng": {
+                            "type": "number",
+                            "format": "float",
+                            "description": "Longitude of the city"
+                          },
+                          "forecast": {
+                            "type": "object",
+                            "description": "Minified daily forecast information for the city"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/forecastHourly/{lat},{lon}": {
+      "get": {
+        "summary": "Get hourly forecast for a location.",
+        "description": "Get hourly forecast for a location.  This endpoint returns a maximum of 24 hours of hourly forecast data at a time.",
+        "operationId": "getHourlyForecast",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "lat",
+            "description": "Latitude of the location in decimal degrees.",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "path",
+            "name": "lon",
+            "description": "Longitude of the location in decimal degrees.",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "start_date",
+            "description": "Start date and time for hourly forecast data in ISO 8601 format. Timezone must be specified.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "end_date",
+            "description": "End date and time for hourly forecast data in ISO 8601 format. Timezone must be specified.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

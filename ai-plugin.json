@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "NOAA Weather",
+  "name_for_model": "NOAA_Weather",
+  "description_for_human": "Plugin for getting weather information for locations in the US from the National Weather Service (NWS).",
+  "description_for_model": "Plugin for getting weather information for locations in the United States. The data provider is the NWS/NOAA. Do not add comments if you are providing JSON data.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3333/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "http://localhost:3333/logo.png",
+  "contact_email": "support@noaa.gov",
+  "legal_info_url": "https://www.weather.gov/disclaimer"
+}
